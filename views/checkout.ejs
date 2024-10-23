@@ -1,0 +1,25 @@
+<%- include('partials/header') %>
+<div class="checkout">
+    <h2>Checkout</h2>
+    <div class="order-summary">
+        <h3>Order Summary</h3>
+        <% cartItems.forEach(item => { %>
+            <div class="order-item">
+                <span><%= item.name %> x <%= item.quantity %></span>
+                <span>฿<%= (item.price * item.quantity).toLocaleString() %></span>
+            </div>
+        <% }); %>
+        <div class="total">
+            <strong>Total:</strong>
+            <strong>฿<%= total.toLocaleString() %></strong>
+        </div>
+    </div>
+    <form action="/order/create" method="POST" class="checkout-form">
+        <div class="form-group">
+            <label for="address">Shipping Address:</label>
+            <textarea name="address" required></textarea>
+        </div>
+        <button type="submit">Place Order</button>
+    </form>
+</div>
+<%- include('partials/footer') %>

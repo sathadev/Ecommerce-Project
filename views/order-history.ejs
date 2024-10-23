@@ -1,0 +1,31 @@
+<%- include('partials/header') %>
+<div class="order-history">
+    <h2>Order History</h2>
+    <% if (orders.length === 0) { %>
+        <p>No orders found</p>
+    <% } else { %>
+        <div class="orders-list">
+            <% orders.forEach(order => { %>
+                <div class="order-card">
+                    <div class="order-header">
+                        <h3>Order #<%= order.id %></h3>
+                        <span class="order-date"><%= new Date(order.created_at).toLocaleDateString() %></span>
+                    </div>
+                    <div class="order-status">
+                        Status: <span class="status-badge <%= order.status.toLowerCase() %>"><%= order.status %></span>
+                    </div>
+                    <div class="order-items">
+                        <p><strong>Items:</strong></p>
+                        <p><%= order.items_detail %></p>
+                    </div>
+                    <div class="order-footer">
+                        <p class="order-total">Total: ฿<%= order.total_amount.toLocaleString() %></p>
+                        <a href="/order/detail/<%= order.id %>" class="view-detail-btn">View Details</a>
+                    </div>
+                </div>
+            <% }); %>
+        </div>
+    <% } %>
+    <a href="/" class="continue-shopping">Continue Shopping</a>
+</div>
+<%- include('partials/footer') %>

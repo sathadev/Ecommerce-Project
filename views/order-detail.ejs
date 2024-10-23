@@ -1,0 +1,40 @@
+<%- include('partials/header') %>
+<div class="order-detail">
+    <h2>Order #<%= order.id %> Details</h2>
+    <div class="order-info">
+        <div class="info-section">
+            <h3>Order Information</h3>
+            <p><strong>Date:</strong> <%= new Date(order.created_at).toLocaleString() %></p>
+            <p><strong>Status:</strong> <span class="status-badge <%= order.status.toLowerCase() %>"><%= order.status %></span></p>
+            <p><strong>Total Amount:</strong> ฿<%= order.total_amount.toLocaleString() %></p>
+        </div>
+        
+        <div class="info-section">
+            <h3>Shipping Address</h3>
+            <p><%= order.shipping_address %></p>
+        </div>
+    </div>
+
+    <div class="order-items-detail">
+        <h3>Order Items</h3>
+        <div class="items-grid">
+            <% items.forEach(item => { %>
+                <div class="item-card">
+                    <img src="<%= item.image_url %>" alt="<%= item.name %>">
+                    <div class="item-info">
+                        <h4><%= item.name %></h4>
+                        <p>Quantity: <%= item.quantity %></p>
+                        <p>Price per unit: ฿<%= item.price.toLocaleString() %></p>
+                        <p>Subtotal: ฿<%= (item.price * item.quantity).toLocaleString() %></p>
+                    </div>
+                </div>
+            <% }); %>
+        </div>
+    </div>
+
+    <div class="order-actions">
+        <a href="/order/history" class="back-btn">Back to Order History</a>
+        <a href="/" class="continue-shopping">Continue Shopping</a>
+    </div>
+</div>
+<%- include('partials/footer') %>

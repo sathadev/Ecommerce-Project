@@ -1,0 +1,23 @@
+<%- include('partials/header') %>
+<div class="cart">
+    <h2>Shopping Cart</h2>
+    <% if (cartItems.length === 0) { %>
+        <p>Your cart is empty</p>
+    <% } else { %>
+        <div class="cart-items">
+            <% cartItems.forEach(item => { %>
+                <div class="cart-item">
+                    <h3><%= item.name %></h3>
+                    <p>Quantity: <%= item.quantity %></p>
+                    <p>Price: ฿<%= item.price.toLocaleString() %></p>
+                    <p>Total: ฿<%= (item.price * item.quantity).toLocaleString() %></p>
+                </div>
+            <% }); %>
+        </div>
+        <div class="cart-summary">
+            <h3>Total: ฿<%= total.toLocaleString() %></h3>
+            <a href="/order/checkout" class="checkout-button">Proceed to Checkout</a>
+        </div>
+    <% } %>
+</div>
+<%- include('partials/footer') %>
