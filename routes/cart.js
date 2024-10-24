@@ -24,10 +24,24 @@ router.get('/', async (req, res) => {
 router.post('/add', async (req, res) => {
     const { productId, quantity } = req.body;
     try {
+        // เช็คจำนวน stock ของสินค้า
+        const [[product]] = await pool.query('SELECT stock FROM products WHERE id = ?', [productId]);
+
+        if (!product) {
+            return res.status(404).send('Product not found');
+        }
+
+        // ตรวจสอบว่าจำนวนที่ต้องการเพิ่มมากกว่าจำนวน stock หรือไม่
+        if (quantity > product.stock) {
+            return res.status(400).send('สินค้ามีจำนวนไม่เพียงพอ');
+        }
+
+        // เพิ่มสินค้าลงใน cart
         await pool.query(
             'INSERT INTO cart_items (session_id, product_id, quantity) VALUES (?, ?, ?)',
             [req.session.id, productId, quantity]
         );
+
         res.redirect('/cart');
     } catch (error) {
         console.error(error);

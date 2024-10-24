@@ -5,6 +5,7 @@
             <img src="<%= product.image_url %>" alt="<%= product.name %>">
             <h3><%= product.name %></h3>
             <p><%= product.description %></p>
+            <p>สินค้าเหลือ <%= product.stock %> ชิ้น</p>
             <p class="price">฿<%= product.price.toLocaleString() %></p>
             <form action="/cart/add" method="POST">
                 <input type="hidden" name="productId" value="<%= product.id %>">
