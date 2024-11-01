@@ -1,23 +1,65 @@
 <%- include('partials/header') %>
-<div class="cart">
-    <h2>Shopping Cart</h2>
-    <% if (cartItems.length === 0) { %>
-        <p>Your cart is empty</p>
-    <% } else { %>
-        <div class="cart-items">
-            <% cartItems.forEach(item => { %>
-                <div class="cart-item">
-                    <h3><%= item.name %></h3>
-                    <p>Quantity: <%= item.quantity %></p>
-                    <p>Price: ฿<%= item.price.toLocaleString() %></p>
-                    <p>Total: ฿<%= (item.price * item.quantity).toLocaleString() %></p>
+<div class="container">
+    <div class="cart">
+        <h2>Shopping Cart</h2>
+        <% if (cartItems.length === 0) { %>
+            <div class="info-section">
+                <p>Your cart is empty</p>
+                <a href="/" class="continue-shopping">Continue Shopping</a>
+            </div>
+        <% } else { %>
+            <div class="cart-items">
+                <% cartItems.forEach(item => { %>
+                    <div class="cart-item">
+                        <div class="item-info">
+                            <h3><%= item.name %></h3>
+                            <p>Price: ฿<%= item.price.toLocaleString() %></p>
+                        </div>
+                        
+                        <div class="form-group">
+                            <form action="/cart/update" method="POST" style="display: flex; gap: 0.8rem; align-items: center;">
+                                <input type="hidden" name="cartItemId" value="<%= item.id %>">
+                                <input type="number" 
+                                       name="quantity" 
+                                       value="<%= item.quantity %>" 
+                                       min="1" 
+                                       max="<%= item.stock %>"
+                                       style="width: 70px;">
+                                <button type="submit" class="continue-shopping" style="margin: 0; padding: 0.5rem 1rem;">
+                                    Update
+                                </button>
+                            </form>
+                        </div>
+
+                        <div class="item-info">
+                            <p class="price">
+                                Total: ฿<%= (item.price * item.quantity).toLocaleString() %>
+                            </p>
+                            <% if (item.stock < 5) { %>
+                                <p style="color: var(--primary);">Only <%= item.stock %> items left!</p>
+                            <% } %>
+                        </div>
+
+                        <form action="/cart/remove" method="POST" style="text-align: right;">
+                            <input type="hidden" name="cartItemId" value="<%= item.id %>">
+                            <button type="submit" class="back-btn" style="margin: 0; padding: 0.5rem 1rem;">
+                                Remove
+                            </button>
+                        </form>
+                    </div>
+                <% }); %>
+            </div>
+
+            <div class="cart-summary">
+                <div class="total">
+                    <h3>Total Amount: ฿<%= total.toLocaleString() %></h3>
                 </div>
-            <% }); %>
-        </div>
-        <div class="cart-summary">
-            <h3>Total: ฿<%= total.toLocaleString() %></h3>
-            <a href="/order/checkout" class="checkout-button">Proceed to Checkout</a>
-        </div>
-    <% } %>
+                <div class="order-actions">
+                    <a href="/" class="back-btn">Continue Shopping</a>
+                    <a href="/order/checkout" class="checkout-button">Proceed to Checkout</a>
+                </div>
+            </div>
+        <% } %>
+    </div>
 </div>
 <%- include('partials/footer') %>
